@@ -6,15 +6,15 @@
 #    By: lukitronix <lukitronix@student.42.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/14 12:33:14 by evgenkarlso       #+#    #+#              #
-#    Updated: 2025/07/29 17:18:28 by lukitronix       ###   ########.fr        #
+#    Updated: 2025/07/29 17:18:59 by lukitronix       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := bsq
 CC := gcc
 FLAGS := -Wall -Werror -Wextra
-SRC_DIR := ./srcs/
-OBJ_DIR	:= ./obj/
+SRC_DIR := ./
+OBJ_DIR	:= ./
 SRC_FILES := main.c\
 			parser.c \
 
