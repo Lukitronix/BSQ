@@ -6,29 +6,40 @@
 #    By: lukitronix <lukitronix@student.42.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/14 12:33:14 by evgenkarlso       #+#    #+#              #
-#    Updated: 2025/07/29 17:16:27 by lukitronix       ###   ########.fr        #
+#    Updated: 2025/07/29 17:18:28 by lukitronix       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := bsq
-SRC_DIR	= .
-SRCS	= $(SRC_DIR)/main.c \
-		  $(SRC_DIR)/ft_atoi.c \
-		  $(SRC_DIR)/parser.c \
-OBJS	= $(SRCS: .c=.o)
-CC	= cc
-CFLAGS	= -Wall -Wextra -Werror
+CC := gcc
+FLAGS := -Wall -Werror -Wextra
+SRC_DIR := ./srcs/
+OBJ_DIR	:= ./obj/
+SRC_FILES := main.c\
+			parser.c \
 
-all: $(NAME)
+OBJ_FILES = $(SRC_FILES:.c=.o)
+SRCS = $(addprefix $(SRC_DIR), $(SRC_FILES))
+OBJS = $(addprefix $(OBJ_DIR), $(OBJ_FILES))
+HEADER := -I includes/
+RM := rm -rf
+
+all: obj $(NAME)
+
+obj: $(SRCS)
+	@mkdir -p $(OBJ_DIR)
+
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c
+	$(CC) $(FLAGS) -c $< -o $@ $(HEADER)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(FLAGS) -o $(NAME) $(OBJS) $(HEADER)
 
 clean:
-	rm -f $(OBJS)
+	$(RM) $(OBJ_DIR)
 
 fclean: clean
-	rm -f $(NAME)
+	@$(RM) $(NAME)
 
 re: fclean all
 
