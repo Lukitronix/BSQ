@@ -3,27 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lukitronix <lukitronix@student.42.fr>      +#+  +:+       +#+        */
+/*   By: paulasanz <paulasanz@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 21:35:21 by lukitronix        #+#    #+#             */
-/*   Updated: 2025/07/29 18:20:38 by lukitronix       ###   ########.fr       */
+/*   Updated: 2025/07/29 19:25:39 by paulasanz        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsq.h"
 
-void	ft_malloc(t_map *map)
-{
-	map = malloc(sizeof(t_map));
-	map->raw = malloc(sizeof(char) * MAX_MAP_SIZE);
-	if (!map)
-	{
-		write(2, "Error\n", 7);
-		return (1);
-	}
-}
-
-int	ft_open_file(char *path, t_map *map)
+int	ft_open_file(char *path, t_map **map)
 {
 	int fd;
 	char buffer[1024];
@@ -39,16 +28,6 @@ int	ft_open_file(char *path, t_map *map)
 	return (fd);
 }
 
-void ft_free_map(t_map *map)
-{
-	if (map)
-	{
-		if (map->raw)
-			free(map->raw);
-		free(map);
-	}
-}
-
 t_map *load_map(char *path)
 {	
 	t_map *map;
@@ -57,7 +36,7 @@ t_map *load_map(char *path)
 	int bytes;
 
 	(void)map;
-	fd = ft_open_file(path, map);
+	fd = ft_open_file(path, &map);
 	if (fd < 0)
 		return (0);
 	bytes = read(fd, buffer, 1024);
@@ -67,50 +46,47 @@ t_map *load_map(char *path)
 		close(fd);
 		return (0);
 	}
-	
+	close(fd);
+	ft_free_map(map);
 }
 
-t_map *load_map_from_stdin(void)
+void ft_read_map(t_map *map, char *buffer, int size)
 {
-	char header[MAX_HEADER];
-	int i = 0;
-	t_map *map = malloc(sizeof(t_map));
-	if (!map)
-		return (0);
-	while (read(0, &header[i], 1) > 0 && header[i] != '\n')
-		i++;
-	header[i] = '\0';
-	if (!parse_header(header, map))
-		return (0);
-	map->raw = malloc(sizeof(char) * MAX_MAP_SIZE);
-	if (!map->raw)
-		return (0);
+	int i ;
+
 	i = 0;
-	while (read(0, &map->raw[i], 1) > 0 && i < MAX_MAP_SIZE)
+	while (i < size)
+	{
+		map->raw[i] = buffer[i];
 		i++;
+	}
 	map->raw[i] = '\0';
-	map->cols = count_columns(map->raw);
-	return (map);
+	i = 0;
+	map->rows = 0;
+	while (map->raw[i] >= '0' && map->raw[i] <= '9')
+	{
+		map->rows = map->rows * 10 + (map->raw[i] - '0');
+		i++;
+	}
+	map->empty = map->raw[i];
+	map->obstacle = map->raw[i + 1];
+	map->full = map->raw[i + 2];
+	if (map->raw[i + 3] != '\n')
+		write(2, "Formato de cabecera inválido\n", 30);
 }
 
-int parse_header(char *header, t_map *map)
+void ft_read_columns(t_map *map)
 {
-	int i = 0;
-	char nb_line_str[12];
-	int j = 0;
+	int i;
+	int j;
 
-	while (header[i] >= '0' && header[i] <= '9')
+	i = 0;
+	j = 0;
+	while (map->raw[i] != '\0')
 	{
-		nb_line_str[j] = header[i];
-		i++;
+		if (j == 0)
+			map->cols++;
 		j++;
 	}
-	nb_line_str[j] = '\0';
-	map->nb_rows = ft_atoi(nb_line_str);
-	map->empty = header[i];
-	map->obstacle = header[i + 1];
-	map->full = header[i + 2];
-	if (map->empty == map->obstacle || map->empty == map->full || map->obstacle == map->full)
-		return (0);
-	return (1);
+	i++;
 }

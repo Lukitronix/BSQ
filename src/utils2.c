@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lukitronix <lukitronix@student.42.fr>      +#+  +:+       +#+        */
+/*   By: paulasanz <paulasanz@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 17:35:58 by lukitronix        #+#    #+#             */
-/*   Updated: 2025/07/29 17:37:12 by lukitronix       ###   ########.fr       */
+/*   Updated: 2025/07/29 19:06:13 by paulasanz        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,6 @@ int get_map_size(char *str)
 	while (str[i] != '\0')
 		i++;
 	return (i);
-}
-
-int count_columns(char *map_str)
-{
-	int i = 0;
-	int cols = 0;
-	while (map_str[i] != '\n' && map_str[i] != '\0')
-	{
-		cols++;
-		i++;
-	}
-	return (cols);
 }
 
 int	ft_isspace(char c)
