@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulasanz <paulasanz@student.42.fr>        +#+  +:+       +#+        */
+/*   By: lukitronix <lukitronix@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 21:35:21 by lukitronix        #+#    #+#             */
-/*   Updated: 2025/07/29 19:25:39 by paulasanz        ###   ########.fr       */
+/*   Updated: 2025/07/30 12:40:00 by lukitronix       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,8 @@ int	ft_open_file(char *path, t_map **map)
 	if (fd < 0)
 	{
 		write(2, "Error opening file\n", 19);
-		return;
+		return (-1);
 	}
-	ft_malloc(map);
 	return (fd);
 }
 
@@ -35,19 +34,25 @@ t_map *load_map(char *path)
 	char buffer[1024];
 	int bytes;
 
-	(void)map;
+	ft_malloc(&map);
+	if (!map)
+		return (NULL);
 	fd = ft_open_file(path, &map);
 	if (fd < 0)
-		return (0);
+	{
+		ft_free_map(map);
+		return (NULL);
+	}
 	bytes = read(fd, buffer, 1024);
 	if (bytes < 0)
 	{
 		write(2, "Error reading file\n", 19);
 		close(fd);
-		return (0);
+		ft_free_map(map);
+		return (NULL);
 	}
 	close(fd);
-	ft_free_map(map);
+	return (map);
 }
 
 void ft_read_map(t_map *map, char *buffer, int size)

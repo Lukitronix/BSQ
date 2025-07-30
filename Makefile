@@ -6,7 +6,7 @@
 #    By: lukitronix <lukitronix@student.42.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/14 12:33:14 by evgenkarlso       #+#    #+#              #
-#    Updated: 2025/07/29 17:39:04 by lukitronix       ###   ########.fr        #
+#    Updated: 2025/07/30 12:18:19 by lukitronix       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,13 @@ SRC_DIR := ./src
 OBJ_DIR := ./obj
 SRC_FILES := main.c \
              parser.c \
-             ft_atoi.c
+             matrix.c \
+			 utils2.c \
+			 utils.c \
+			 malloc.c \
+			 errors.c \
+			 print_matrix.c
+
 OBJ_FILES := $(SRC_FILES:.c=.o)
 SRCS := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS := $(addprefix $(OBJ_DIR)/, $(OBJ_FILES))

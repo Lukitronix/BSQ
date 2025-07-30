@@ -45,17 +45,3 @@ void	ft_putchar(char c)
 {
 	write(1, &c, 1);
 }
-
-void		ft_put_map(t_unc **map_char)
-{
-	size_t	y;
-	size_t	x;
-
-	y = -1;
-	while (map_char[++y])
-	{
-		x = -1;
-		while (map_char[y][++x])
-			ft_putchar((char)map_char[y][x]);
-	}
-}
