@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_biggest_square.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulasanz <paulasanz@student.42.fr>        +#+  +:+       +#+        */
+/*   By: lucmunoz <lucmunoz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 19:35:47 by paulasanz         #+#    #+#             */
-/*   Updated: 2025/07/30 16:36:38 by paulasanz        ###   ########.fr       */
+/*   Updated: 2025/07/30 18:15:51 by lucmunoz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,42 +31,45 @@ void	update_square(int value, int y, int x, t_square *sq)
 	}
 }
 
-void	fill_row(t_map *map, char **grid, int **aux, int y, t_square *sq)
+void	fill_row(t_map *map, t_square *sq, int y)
 {
 	int	x;
 
 	x = 0;
 	while (x < map->cols)
 	{
-		if (grid[y][x] == map->obstacle)
-			aux[y][x] = 0;
+		if (map->grid[y][x] == map->obstacle)
+			map->aux[y][x] = 0;
 		else if (y == 0 || x == 0)
-			aux[y][x] = 1;
+			map->aux[y][x] = 1;
 		else
-			aux[y][x] = 1 + min(aux[y - 1][x], aux[y][x - 1], aux[y - 1][x - 1]);
-		update_square(aux[y][x], y, x, sq);
+			map->aux[y][x] = 1 + min(
+					map->aux[y - 1][x],
+					map->aux[y][x - 1],
+					map->aux[y - 1][x - 1]);
+		update_square(map->aux[y][x], y, x, sq);
 		x++;
 	}
 }
 
 int	**build_matrix(t_map *map, char **grid, t_square *sq)
 {
-	int	**aux;
 	int	y;
 
-	aux = malloc(sizeof(int *) * map->rows);
-	if (!aux)
+	map->grid = grid;
+	map->aux = malloc(sizeof(int *) * map->rows);
+	if (!map->aux)
 		return (NULL);
 	y = 0;
 	while (y < map->rows)
 	{
-		aux[y] = malloc(sizeof(int) * map->cols);
-		if (!aux[y])
+		map->aux[y] = malloc(sizeof(int) * map->cols);
+		if (!map->aux[y])
 			return (NULL);
-		fill_row(map, grid, aux, y, sq);
+		fill_row(map, sq, y);
 		y++;
 	}
-	return (aux);
+	return (map->aux);
 }
 
 t_square	find_biggest_square(t_map *map, char **grid)

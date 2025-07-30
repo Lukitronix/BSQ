@@ -6,7 +6,7 @@
 /*   By: paulasanz <paulasanz@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 19:52:56 by paulasanz         #+#    #+#             */
-/*   Updated: 2025/07/30 16:44:01 by paulasanz        ###   ########.fr       */
+/*   Updated: 2025/07/30 17:46:02 by lucmunoz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 int	main(int argc, char **argv)
 {
-	t_map *map;
-	char **grid;
-	
+	t_map	*map;
+	char	**grid;
+
 	map = load_map(argv[1]);
 	grid = create_grid(map);
 	fill_square(map, grid, find_biggest_square(map, grid));
 	print_grid(grid, map->rows);
-	(void)argc; // Argument count is not used in this implementation
+	(void)argc;
 	return (0);
 }
 

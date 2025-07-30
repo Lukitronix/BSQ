@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lukitronix <lukitronix@student.42.fr>      +#+  +:+       +#+        */
+/*   By: lucmunoz <lucmunoz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 21:35:21 by lukitronix        #+#    #+#             */
-/*   Updated: 2025/07/30 17:09:39 by lukitronix       ###   ########.fr       */
+/*   Updated: 2025/07/30 18:17:51 by lucmunoz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,24 @@
 
 int	ft_open_file(char *path)
 {
-	int fd;
+	int	fd;
 
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
 	{
 		write(2, "Error opening file\n", 19);
-		// ft_free_map(fd);
 		return (-1);
 	}
 	return (fd);
 }
 
-void ft_read_columns(t_map *map)
+void	ft_read_columns(t_map *map)
 {
-	int i = 0;
-	int j = 0;
+	int	i;
+	int	j;
 
+	i = 0;
+	j = 0;
 	while (map->raw[i] != '\n' && map->raw[i] != '\0')
 		i++;
 	i++;
@@ -39,26 +40,10 @@ void ft_read_columns(t_map *map)
 	map->cols = j;
 }
 
-void	ft_read_map(t_map *map, char *buffer, int size)
+int	ft_parse_header(t_map *map, int i)
 {
-	int	i;
 	int	j;
 
-	i = 0;
-	while (i < size)
-	{
-		map->raw[i] = buffer[i];
-		i++;
-	}
-	map->raw[i] = '\0';
-	i = 0;
-	while (map->raw[i] && map->raw[i] != '\n')
-		i++;
-	if (i < 4)
-	{
-		write(2, "Formato de cabecera inválido\n", 30);
-		return ;
-	}
 	map->full = map->raw[i - 1];
 	map->obstacle = map->raw[i - 2];
 	map->empty = map->raw[i - 3];
@@ -67,16 +52,33 @@ void	ft_read_map(t_map *map, char *buffer, int size)
 	while (j < i - 3 && map->raw[j] >= '0' && map->raw[j] <= '9')
 		map->rows = map->rows * 10 + (map->raw[j++] - '0');
 	if (j != i - 3)
-		write(2, "Número de filas inválido\n", 26);
-	ft_read_columns(map);
+		return (0);
+	return (1);
 }
 
-t_map *load_map(char *path)
-{	
-	t_map *map;
-	int fd;
-	char buffer[MAX_MAP_SIZE];
-	int bytes;
+int	ft_read_map(t_map *map, char *buffer, int size)
+{
+	int	i;
+
+	i = -1;
+	while (++i < size)
+		map->raw[i] = buffer[i];
+	map->raw[i] = '\0';
+	i = 0;
+	while (map->raw[i] && map->raw[i] != '\n')
+		i++;
+	if (i < 4 || !ft_parse_header(map, i))
+		return (ft_free_map_error(map));
+	ft_read_columns(map);
+	return (1);
+}
+
+t_map	*load_map(char *path)
+{
+	t_map	*map;
+	int		fd;
+	char	buffer[MAX_MAP_SIZE];
+	int		bytes;
 
 	ft_malloc(&map);
 	if (!map)
