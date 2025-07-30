@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulasanz <paulasanz@student.42.fr>        +#+  +:+       +#+        */
+/*   By: lukitronix <lukitronix@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 21:35:21 by lukitronix        #+#    #+#             */
-/*   Updated: 2025/07/30 16:57:16 by paulasanz        ###   ########.fr       */
+/*   Updated: 2025/07/30 17:09:39 by lukitronix       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,10 @@ void ft_read_columns(t_map *map)
 	map->cols = j;
 }
 
-void ft_read_map(t_map *map, char *buffer, int size)
+void	ft_read_map(t_map *map, char *buffer, int size)
 {
-	int i ;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (i < size)
@@ -51,20 +52,23 @@ void ft_read_map(t_map *map, char *buffer, int size)
 	}
 	map->raw[i] = '\0';
 	i = 0;
-	map->rows = 0;
-	while (map->raw[i] >= '0' && map->raw[i] <= '9')
-	{
-		map->rows = map->rows * 10 + (map->raw[i] - '0');
+	while (map->raw[i] && map->raw[i] != '\n')
 		i++;
-
-	}
-	ft_read_columns(map);
-	map->empty = map->raw[i];
-	map->obstacle = map->raw[i + 1];
-	map->full = map->raw[i + 2];
-	if (map->raw[i + 3] != '\n')
+	if (i < 4)
+	{
 		write(2, "Formato de cabecera inválido\n", 30);
-	
+		return ;
+	}
+	map->full = map->raw[i - 1];
+	map->obstacle = map->raw[i - 2];
+	map->empty = map->raw[i - 3];
+	map->rows = 0;
+	j = 0;
+	while (j < i - 3 && map->raw[j] >= '0' && map->raw[j] <= '9')
+		map->rows = map->rows * 10 + (map->raw[j++] - '0');
+	if (j != i - 3)
+		write(2, "Número de filas inválido\n", 26);
+	ft_read_columns(map);
 }
 
 t_map *load_map(char *path)

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   bsq.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulasanz <paulasanz@student.42.fr>        +#+  +:+       +#+        */
+/*   By: lukitronix <lukitronix@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 17:23:59 by lukitronix        #+#    #+#             */
-/*   Updated: 2025/07/30 16:58:15 by paulasanz        ###   ########.fr       */
+/*   Updated: 2025/07/30 17:20:50 by lukitronix       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BSQ_H
 # define BSQ_H
 
-# define MAX_MAP_SIZE 3000000
+# define MAX_MAP_SIZE 8367000
 # define MAX_HEADER 64
 
 # include <stdlib.h>
