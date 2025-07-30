@@ -6,7 +6,7 @@
 /*   By: paulasanz <paulasanz@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 21:35:21 by lukitronix        #+#    #+#             */
-/*   Updated: 2025/07/30 16:43:08 by paulasanz        ###   ########.fr       */
+/*   Updated: 2025/07/30 16:57:16 by paulasanz        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,14 @@ t_map *load_map(char *path)
 {	
 	t_map *map;
 	int fd;
-	char buffer[1024];
+	char buffer[MAX_MAP_SIZE];
 	int bytes;
 
 	ft_malloc(&map);
 	if (!map)
 		return (NULL);
 	fd = ft_open_file(path);
-	bytes = read(fd, buffer, 1024);
+	bytes = read(fd, buffer, MAX_MAP_SIZE);
 	if (bytes < 0)
 	{
 		write(2, "Error reading file\n", 19);
