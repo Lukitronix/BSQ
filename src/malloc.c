@@ -6,11 +6,21 @@
 /*   By: paulasanz <paulasanz@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 18:56:52 by paulasanz         #+#    #+#             */
-/*   Updated: 2025/07/29 18:57:48 by paulasanz        ###   ########.fr       */
+/*   Updated: 2025/07/30 15:54:20 by paulasanz        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsq.h"
+
+void ft_free_map(t_map *map)
+{
+	if (map)
+	{
+		if (map->raw)
+			free(map->raw);
+		free(map);
+	}
+}
 
 void	ft_malloc(t_map **map)
 {
@@ -23,15 +33,5 @@ void	ft_malloc(t_map **map)
 		write(2, "Error\n", 6);
 		free(*map);
 		*map = NULL;
-	}
-}
-
-void ft_free_map(t_map *map)
-{
-	if (map)
-	{
-		if (map->raw)
-			free(map->raw);
-		free(map);
 	}
 }

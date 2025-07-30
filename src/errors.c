@@ -6,9 +6,11 @@
 /*   By: paulasanz <paulasanz@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 18:24:14 by paulasanz         #+#    #+#             */
-/*   Updated: 2025/07/29 18:24:40 by paulasanz        ###   ########.fr       */
+/*   Updated: 2025/07/30 15:40:59 by paulasanz        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "bsq.h"
 
 void	ft_errors(void)
 {

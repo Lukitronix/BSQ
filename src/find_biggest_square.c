@@ -6,7 +6,7 @@
 /*   By: paulasanz <paulasanz@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 19:35:47 by paulasanz         #+#    #+#             */
-/*   Updated: 2025/07/29 19:42:44 by paulasanz        ###   ########.fr       */
+/*   Updated: 2025/07/30 16:36:38 by paulasanz        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	update_square(int value, int y, int x, t_square *sq)
 	}
 }
 
-void	fill_dp_row(t_map *map, char **grid, int **dp, int y, t_square *sq)
+void	fill_row(t_map *map, char **grid, int **aux, int y, t_square *sq)
 {
 	int	x;
 
@@ -39,54 +39,54 @@ void	fill_dp_row(t_map *map, char **grid, int **dp, int y, t_square *sq)
 	while (x < map->cols)
 	{
 		if (grid[y][x] == map->obstacle)
-			dp[y][x] = 0;
+			aux[y][x] = 0;
 		else if (y == 0 || x == 0)
-			dp[y][x] = 1;
+			aux[y][x] = 1;
 		else
-			dp[y][x] = 1 + min(dp[y - 1][x], dp[y][x - 1], dp[y - 1][x - 1]);
-		update_square(dp[y][x], y, x, sq);
+			aux[y][x] = 1 + min(aux[y - 1][x], aux[y][x - 1], aux[y - 1][x - 1]);
+		update_square(aux[y][x], y, x, sq);
 		x++;
 	}
 }
 
-int	**build_dp_matrix(t_map *map, char **grid, t_square *sq)
+int	**build_matrix(t_map *map, char **grid, t_square *sq)
 {
-	int	**dp;
+	int	**aux;
 	int	y;
 
-	dp = malloc(sizeof(int *) * map->rows);
-	if (!dp)
+	aux = malloc(sizeof(int *) * map->rows);
+	if (!aux)
 		return (NULL);
 	y = 0;
 	while (y < map->rows)
 	{
-		dp[y] = malloc(sizeof(int) * map->cols);
-		if (!dp[y])
+		aux[y] = malloc(sizeof(int) * map->cols);
+		if (!aux[y])
 			return (NULL);
-		fill_dp_row(map, grid, dp, y, sq);
+		fill_row(map, grid, aux, y, sq);
 		y++;
 	}
-	return (dp);
+	return (aux);
 }
 
 t_square	find_biggest_square(t_map *map, char **grid)
 {
 	t_square	sq;
-	int			**dp;
+	int			**aux;
 	int			y;
 
 	sq.size = 0;
 	sq.row = 0;
 	sq.col = 0;
-	dp = build_dp_matrix(map, grid, &sq);
-	if (!dp)
+	aux = build_matrix(map, grid, &sq);
+	if (!aux)
 		return (sq);
 	y = 0;
 	while (y < map->rows)
 	{
-		free(dp[y]);
+		free(aux[y]);
 		y++;
 	}
-	free(dp);
+	free(aux);
 	return (sq);
 }

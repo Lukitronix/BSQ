@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bsq.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lukitronix <lukitronix@student.42.fr>      +#+  +:+       +#+        */
+/*   By: paulasanz <paulasanz@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 17:23:59 by lukitronix        #+#    #+#             */
-/*   Updated: 2025/07/30 12:13:57 by lukitronix       ###   ########.fr       */
+/*   Updated: 2025/07/30 16:41:29 by paulasanz        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,11 @@ typedef struct s_square
 	int		col;
 }	t_square;
 
-int	ft_open_file(char *path, t_map **map);
+void	ft_errors(void);
+int ft_strlen(char *str);
+int	ft_open_file(char *path);
 t_map *load_map(char *path);
+t_square	find_biggest_square(t_map *map, char **grid);
 void ft_read_map(t_map *map, char *buffer, int size);
 void ft_read_columns(t_map *map);
 void	ft_putchar(char c);

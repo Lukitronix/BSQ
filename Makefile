@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lukitronix <lukitronix@student.42.fr>      +#+  +:+       +#+         #
+#    By: paulasanz <paulasanz@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/14 12:33:14 by evgenkarlso       #+#    #+#              #
-#    Updated: 2025/07/30 12:18:19 by lukitronix       ###   ########.fr        #
+#    Updated: 2025/07/30 16:42:46 by paulasanz        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRC_FILES := main.c \
 			 utils.c \
 			 malloc.c \
 			 errors.c \
+			 find_biggest_square.c \
 			 print_matrix.c
 
 OBJ_FILES := $(SRC_FILES:.c=.o)
